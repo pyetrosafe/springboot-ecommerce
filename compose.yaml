@@ -13,15 +13,9 @@ services:
     tty: true
     ports:
       - "8080:8080"
-      # - "5005:5005"
+      - "5005:5005"
     # environment:
-      # - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
-      # - spring.datasource.url=jdbc:postgresql://localhost:5432/postgres?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-      # - spring.datasource.username=postgres
-      # - spring.datasource.password=postgrespass
-      # - spring.datasource.driver-class-name=org.postgresql.Driver
-      # - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-    # working_dir: /var/www/html/
+    #   - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n
     volumes:
       - ./:/app/
     networks:
