@@ -1,0 +1,58 @@
+# version: '3.0'
+name: com-pyetrosafe-ecommerce
+
+services:
+
+  # Java SpringBoot service
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: com.pyetrosafe.ecommerce-app
+    restart: none
+    tty: true
+    ports:
+      - "8080:8080"
+      # - "5005:5005"
+    # environment:
+      # - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n
+      # - spring.datasource.url=jdbc:postgresql://localhost:5432/postgres?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      # - spring.datasource.username=postgres
+      # - spring.datasource.password=postgrespass
+      # - spring.datasource.driver-class-name=org.postgresql.Driver
+      # - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+    # working_dir: /var/www/html/
+    volumes:
+      - ./:/app/
+    networks:
+      - app-network-java
+    depends_on:
+      - db
+
+  # Postgres
+  db:
+    image: postgres
+    container_name: com.pyetrosafe.ecommerce-postgres
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespass
+      POSTGRES_DB: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+    networks:
+      - app-network-java
+
+# Docker Networks
+networks:
+  app-network-java:
+    driver: bridge
+
+# Volumes
+volumes:
+  dbdata:
+    driver: local
